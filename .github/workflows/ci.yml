@@ -5,6 +5,13 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    env:
+      MONGODB_URI: "mongodb://localhost:27017/?retryWrites=true&w=majority"
+      MONGODB_NAME: "testdb"
+      JWT_SECRET: "testsecret123"
+      JWT_ALGORITHM: "HS256"
+      ACCESS_TOKEN_EXPIRE_MINUTES: "60"
+
     steps:
       - uses: actions/checkout@v4
 
