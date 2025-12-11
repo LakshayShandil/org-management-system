@@ -1,37 +1,38 @@
 # backend/app/main.py
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from slowapi.errors import RateLimitExceeded
-from slowapi import _rate_limit_exceeded_handler
-from slowapi import Limiter
-from slowapi.util import get_remote_address
+import os
 
-
-from app.core.limiter import limiter
 from app.routes import orgs, auth
 from app.core.db import connect_to_mongo, close_mongo
 
 app = FastAPI(title="Org Management Backend")
 
-import os
+# Detect if running inside CI testing environment
 TESTING = os.getenv("TESTING", "0") == "1"
+
+
 if not TESTING:
+    from slowapi import Limiter, _rate_limit_exceeded_handler
+    from slowapi.util import get_remote_address
+
     limiter = Limiter(key_func=get_remote_address)
     app.state.limiter = limiter
     app.add_exception_handler(429, _rate_limit_exceeded_handler)
+else:
+    limiter = None  # no rate limiter in CI/test mode
 
-
-# attach limiter globally
-app.state.limiter = limiter
-app.add_exception_handler(429, _rate_limit_exceeded_handler)
-
-# CORS
+# ------------------------------
+# CORS (open for dev, restrict in prod)
+# ------------------------------
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],   # tighten for production
+    allow_origins=["*"],  # change in production
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 @app.on_event("startup")
 async def startup_event():
@@ -41,7 +42,7 @@ async def startup_event():
 async def shutdown_event():
     await close_mongo()
 
-# Routers
+
 app.include_router(orgs.router, prefix="/org", tags=["org"])
 app.include_router(auth.router)
 

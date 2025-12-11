@@ -6,6 +6,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
+      TESTING: "1"  # Disable rate limiting and slowapi imports
       MONGODB_URI: "mongodb://localhost:27017/?retryWrites=true&w=majority"
       MONGODB_NAME: "testdb"
       JWT_SECRET: "testsecret123"
@@ -20,7 +21,7 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install deps
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r backend/requirements.txt
