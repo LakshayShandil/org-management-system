@@ -1,30 +1,29 @@
 # backend/tests/conftest.py
+import sys, os
 import pytest
 import mongomock
 from fastapi.testclient import TestClient
-from motor.motor_asyncio import AsyncIOMotorClient
+
+# Add backend/ to PYTHONPATH
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+
 from app.main import app
 from app.core import db as core_db
 
 
 @pytest.fixture(scope="session", autouse=True)
 def setup_test_db():
-    # Create a mongomock in-memory client
+    """
+    Replace the MongoDB client with a mongomock in-memory database.
+    """
     mock_client = mongomock.MongoClient()
     mock_db = mock_client["testdb"]
 
-    # Patch the global db reference used by the application
     core_db.db = mock_db
-
-    yield  # Run tests
-
-    # Cleanup after tests
+    yield
     core_db.db = None
 
 
 @pytest.fixture
 def client():
-    """
-    FastAPI TestClient instance.
-    """
     return TestClient(app)
