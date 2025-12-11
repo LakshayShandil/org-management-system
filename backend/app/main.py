@@ -13,6 +13,14 @@ from app.core.db import connect_to_mongo, close_mongo
 
 app = FastAPI(title="Org Management Backend")
 
+import os
+TESTING = os.getenv("TESTING", "0") == "1"
+if not TESTING:
+    limiter = Limiter(key_func=get_remote_address)
+    app.state.limiter = limiter
+    app.add_exception_handler(429, _rate_limit_exceeded_handler)
+
+
 # attach limiter globally
 app.state.limiter = limiter
 app.add_exception_handler(429, _rate_limit_exceeded_handler)
