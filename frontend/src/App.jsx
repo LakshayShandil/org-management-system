@@ -87,7 +87,7 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Dashboard />} />
         <Route path="/create-org" element={<CreateOrg />} />
-        <Route path="/update-org/:id" element={<UpdateOrg />} />
+        <Route path="/update-org" element={<UpdateOrg />} />
         <Route path="/help" element={<Help />} />
         <Route path="/master-list" element={<MasterList />} />
       </Route>
