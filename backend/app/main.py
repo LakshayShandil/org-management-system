@@ -1,7 +1,6 @@
 # backend/app/main.py
 
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 import os
 
 from app.routes import orgs, auth
@@ -30,18 +29,8 @@ else:
     limiter = None  # no rate limiter in CI/test mode
 
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[
-        "https://org-management-system.vercel.app",
-        "https://org-management-system-b9nlj798c-lakshays-projects-6a94f8e4.vercel.app",
-        "http://localhost:5174",
-        "http://localhost:5173",
-    ],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# CORS middleware removed to allow all origins (dev/early deployment)
+# In production, add back specific allow_origins for security
 
 @app.on_event("startup")
 async def startup_event():
