@@ -6,6 +6,7 @@ import os
 
 from app.routes import orgs, auth
 from app.core.db import connect_to_mongo, close_mongo
+from app.core.config import settings
 
 app = FastAPI(title="Org Management Backend")
 
@@ -14,25 +15,28 @@ TESTING = os.getenv("TESTING", "0") == "1"
 
 
 if not TESTING:
-    from slowapi import Limiter, _rate_limit_exceeded_handler
-    from slowapi.util import get_remote_address
+    # conditional import to avoid importing slowapi in CI/test if not installed
+    try:
+        from slowapi import Limiter, _rate_limit_exceeded_handler
+        from slowapi.util import get_remote_address
 
-    limiter = Limiter(key_func=get_remote_address)
-    app.state.limiter = limiter
-    app.add_exception_handler(429, _rate_limit_exceeded_handler)
+        limiter = Limiter(key_func=get_remote_address)
+        app.state.limiter = limiter
+        app.add_exception_handler(429, _rate_limit_exceeded_handler)
+    except Exception:
+        # If slowapi not installed, continue without rate limiting
+        limiter = None
 else:
     limiter = None  # no rate limiter in CI/test mode
 
-# ------------------------------
-# CORS (open for dev, restrict in prod)
-# ------------------------------
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # change in production
+    allow_origins=settings.allowed_origins,  # parsed list from env or ["*"]
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 @app.on_event("startup")
 async def startup_event():
@@ -41,7 +45,6 @@ async def startup_event():
 @app.on_event("shutdown")
 async def shutdown_event():
     await close_mongo()
-
 
 app.include_router(orgs.router, prefix="/org", tags=["org"])
 app.include_router(auth.router)
