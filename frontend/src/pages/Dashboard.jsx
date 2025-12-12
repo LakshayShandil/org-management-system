@@ -42,7 +42,7 @@ export default function Dashboard() {
   if (!auth) {
     return (
       <div className="card">
-        <h3>You must log in to view your organization.</h3>
+        <h3>You must log in to view your organization.If new user create organization</h3>
         <div className="form-row" style={{ marginTop: 16 }}>
           <Link to="/login"><button className="btn">Go to Login</button></Link>
           <Link to="/create-org"><button className="btn ghost">Create Organization</button></Link>
