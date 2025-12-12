@@ -38,12 +38,30 @@ export default function Dashboard() {
   }
 
   // ─────────────────────────────────────────────────────────
-  // LOGIN REQUIRED
-  if (error === "Not authenticated") {
+  // USER NOT LOGGED IN
+  if (!auth) {
     return (
       <div className="card">
         <h3>You must log in to view your organization.</h3>
-        <Link to="/login"><button className="btn">Go to Login</button></Link>
+        <div className="form-row" style={{ marginTop: 16 }}>
+          <Link to="/login"><button className="btn">Go to Login</button></Link>
+          <Link to="/create-org"><button className="btn ghost">Create Organization</button></Link>
+        </div>
+      </div>
+    );
+  }
+
+  // ─────────────────────────────────────────────────────────
+  // USER LOGGED IN BUT NO ORG EXISTS YET
+  if (error && (error.includes("Organization not found") || error.includes("404"))) {
+    return (
+      <div className="card">
+        <h2>No Organization Found</h2>
+        <p className="muted">You are logged in, but no organization is linked to your account yet.</p>
+
+        <Link to="/create-org">
+          <button className="btn">Create Organization</button>
+        </Link>
       </div>
     );
   }
@@ -70,13 +88,14 @@ export default function Dashboard() {
   }
 
   // ─────────────────────────────────────────────────────────
-  // LOADING VIEW
+  // LOADING
   if (!org) {
     return <div className="card">Loading organization data…</div>;
   }
 
-  // ─────────────────────────────────────────────────────────
   const isAdmin = auth && auth.admin_email === org.admin_email;
+
+  // ─────────────────────────────────────────────────────────
 
   return (
     <div className="grid">
