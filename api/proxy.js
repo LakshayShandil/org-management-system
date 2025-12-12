@@ -1,27 +1,42 @@
 export default async function handler(req, res) {
-  const backendURL = "https://org-management-system-p2wu.onrender.com";
+  const backend = "https://org-management-system-p2wu.onrender.com";
 
-  const targetURL = backendURL + req.url.replace("/api/proxy", "");
-
-  console.log("Proxy call →", targetURL);
+  // Build backend URL by removing /api/proxy from frontend request
+  const url = backend + req.url.replace("/api/proxy", "");
 
   try {
-    const response = await fetch(targetURL, {
+    // Read body manually (Vercel does NOT auto-parse req.body)
+    let body = undefined;
+
+    if (req.method !== "GET") {
+      const chunks = [];
+      for await (const chunk of req) chunks.push(chunk);
+      body = Buffer.concat(chunks).toString();
+    }
+
+    // Forward request
+    const backendRes = await fetch(url, {
       method: req.method,
       headers: {
         "Content-Type": req.headers["content-type"] || "application/json",
-        "Authorization": req.headers["authorization"] || "",
+        "Authorization": req.headers["authorization"] || ""
       },
-      body: req.method !== "GET" ? req.body : undefined,
+      body,
     });
 
-    const text = await response.text();
+    const text = await backendRes.text();
 
-    res.status(response.status);
-    res.send(text);
+    // If backend returned JSON, parse it
+    try {
+      res.status(backendRes.status).json(JSON.parse(text));
+    } catch {
+      res.status(backendRes.status).send(text);
+    }
 
   } catch (err) {
-    console.error("Proxy error:", err);
-    res.status(500).json({ error: "Proxy failed", details: err.message });
+    res.status(500).json({
+      detail: "Proxy failed",
+      error: err.message,
+    });
   }
 }
