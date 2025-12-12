@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import { decodeToken } from "../utils/jwt";
 import api from "../utils/api";
 
@@ -8,53 +8,50 @@ const AuthContext = createContext({
   logout: () => {},
 });
 
+const STORAGE_KEY = "token";  // <<<<<< STANDARD NAME (IMPORTANT)
+
 export const AuthProvider = ({ children }) => {
-  const [auth, setAuth] = useState(() => {
-    try {
-      const token = localStorage.getItem("access_token");
-      if (!token) return null;
-      const payload = decodeToken(token);
-      if (!payload) {
-        localStorage.removeItem("access_token");
-        return null;
-      }
-      // Set token immediately on init
-      api.setToken(token);
-      return {
-        token,
-        role: payload?.role,
-        admin_email: payload?.admin_email,
-        organization_name: payload?.organization_name,
-        ...payload,
-      };
-    } catch (e) {
-      console.error("Auth init error:", e);
-      return null;
+  const [auth, setAuth] = useState(null);
+
+  // Load token on refresh
+  useEffect(() => {
+    const token = localStorage.getItem(STORAGE_KEY);
+    if (!token) return;
+
+    const payload = decodeToken(token);
+    if (!payload) {
+      localStorage.removeItem(STORAGE_KEY);
+      return;
     }
-  });
+
+    api.setToken(token);
+
+    setAuth({
+      token,
+      ...payload,
+    });
+  }, []);
 
   const loginWithToken = (token) => {
-    try {
-      const payload = decodeToken(token);
-      if (!payload) {
-        throw new Error("Failed to decode token payload");
-      }
-      const ctx = { token, ...payload };
-      setAuth(ctx);
-      localStorage.setItem("access_token", token);
-      api.setToken(token);
-    } catch (error) {
-      console.error("Token decode error:", error);
-      setAuth(null);
-      localStorage.removeItem("access_token");
-      alert("Invalid token payload: " + error.message);
+    const payload = decodeToken(token);
+    if (!payload) {
+      alert("Invalid token received");
+      return;
     }
+
+    localStorage.setItem(STORAGE_KEY, token);
+    api.setToken(token);
+
+    setAuth({
+      token,
+      ...payload,
+    });
   };
 
   const logout = () => {
-    setAuth(null);
-    localStorage.removeItem("access_token");
+    localStorage.removeItem(STORAGE_KEY);
     api.setToken(null);
+    setAuth(null);
   };
 
   return (
