@@ -1,46 +1,27 @@
-export const config = {
-  api: {
-    bodyParser: false, // Required to forward raw body
-  },
-};
-
 export default async function handler(req, res) {
-  const backendBase = "https://org-management-system-p2wu.onrender.com";
+  const backendURL = "https://org-management-system-p2wu.onrender.com";
 
-  // Remove "/api/proxy" from path and forward to backend
-  const targetUrl = backendBase + req.url.replace("/api/proxy", "");
+  const targetURL = backendURL + req.url.replace("/api/proxy", "");
 
-  // ---- FORWARD HEADERS ----
-  const headers = {};
+  console.log("Proxy call →", targetURL);
 
-  // Preserve content-type
-  if (req.headers["content-type"]) {
-    headers["Content-Type"] = req.headers["content-type"];
-  }
-
-  // Preserve Authorization (VERY IMPORTANT)
-  if (req.headers["authorization"]) {
-    headers["Authorization"] = req.headers["authorization"];
-  }
-
-  // ---- READ RAW BODY ----
-  let body = null;
-  if (req.method !== "GET" && req.method !== "HEAD") {
-    body = await new Promise((resolve) => {
-      let data = [];
-      req.on("data", chunk => data.push(chunk));
-      req.on("end", () => resolve(Buffer.concat(data)));
+  try {
+    const response = await fetch(targetURL, {
+      method: req.method,
+      headers: {
+        "Content-Type": req.headers["content-type"] || "application/json",
+        "Authorization": req.headers["authorization"] || "",
+      },
+      body: req.method !== "GET" ? req.body : undefined,
     });
+
+    const text = await response.text();
+
+    res.status(response.status);
+    res.send(text);
+
+  } catch (err) {
+    console.error("Proxy error:", err);
+    res.status(500).json({ error: "Proxy failed", details: err.message });
   }
-
-  // ---- SEND REQUEST TO BACKEND ----
-  const backendResponse = await fetch(targetUrl, {
-    method: req.method,
-    headers,
-    body,
-  });
-
-  // ---- SEND BACKEND RESPONSE TO FRONTEND ----
-  const data = await backendResponse.text();
-  res.status(backendResponse.status).send(data);
 }
