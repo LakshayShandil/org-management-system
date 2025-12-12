@@ -1,0 +1,8 @@
+[
+  {
+    "_id": "693b263513b2dc052ee43bc0",
+    "email": "admin@twc.com",
+    "password_hash": "$bcrypt-sha256$v=2,t=2b,r=12$e5isLr1EF7nZTN0QkGxPk.$0iiMz67nA1kAYQTQmB4EGLWogWTR.la",
+    "created_at": "2025-12-11 20:14:45.874000"
+  }
+]
