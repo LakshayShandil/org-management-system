@@ -34,6 +34,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "https://org-management-system.vercel.app",
+        "https://org-management-system-b9nlj798c-lakshays-projects-6a94f8e4.vercel.app",
         "http://localhost:5174",
         "http://localhost:5173",
     ],
