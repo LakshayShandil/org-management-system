@@ -25,6 +25,18 @@ export default function Dashboard() {
     load();
   }, [auth]);
 
+  async function handleDelete() {
+    if (!confirm("Are you sure you want to delete this organization? This action cannot be undone.")) return;
+
+    try {
+      await api.instance.delete("/org/delete");
+      logout();
+      nav("/login");
+    } catch (e) {
+      setError(e?.response?.data?.detail || e.message);
+    }
+  }
+
   // ─────────────────────────────────────────────────────────
   // LOGIN REQUIRED
   if (error === "Not authenticated") {

@@ -3,7 +3,7 @@ import api from "../utils/api";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthProvider";
 
-export default function UpdateOrg(){
+export default function UpdateOrg() {
   const [org, setOrg] = useState(null);
   const [form, setForm] = useState({ new_organization_name: "", new_admin_email: "" });
   const [msg, setMsg] = useState(null);
@@ -11,25 +11,43 @@ export default function UpdateOrg(){
   const [loading, setLoading] = useState(false);
   const { auth } = useAuth();
 
+  // SAFEST universal error parser
+  function extractError(e) {
+    let detail = e?.response?.data?.detail;
+
+    if (Array.isArray(detail)) {
+      return detail.map(d => d.msg).join(", ");
+    }
+    if (typeof detail === "string") {
+      return detail;
+    }
+    return e?.message || "Unknown error";
+  }
+
   // Load org details on mount
   useEffect(() => {
-    async function load(){
+    async function load() {
       try {
         const res = await api.getOrg();
         setOrg(res.data);
+        setMsg(null);
       } catch (e) {
-        setMsg({ type: "error", text: "Failed to load organization: " + (e?.response?.data?.detail || e.message) });
+        setMsg({
+          type: "error",
+          text: "Failed to load organization: " + extractError(e)
+        });
       }
     }
     load();
   }, []);
 
-  async function submit(e){
+  async function submit(e) {
     e.preventDefault();
     setMsg(null);
     setLoading(true);
+
     try {
-      // Validate at least one field is filled
+      // Require at least one field
       if (!form.new_organization_name && !form.new_admin_email) {
         setMsg({ type: "error", text: "Please fill in at least one field to update" });
         setLoading(false);
@@ -37,15 +55,25 @@ export default function UpdateOrg(){
       }
 
       await api.updateOrg(form);
-      setMsg({ type: "success", text: "Organization updated successfully! Redirecting…" });
+
+      setMsg({
+        type: "success",
+        text: "Organization updated successfully! Redirecting…"
+      });
+
       setTimeout(() => nav("/"), 1500);
-    } catch (err) {
-      setMsg({ type: "error", text: err?.response?.data?.detail || err.message });
+
+    } catch (e) {
+      setMsg({
+        type: "error",
+        text: extractError(e)
+      });
     } finally {
       setLoading(false);
     }
   }
 
+  // Not logged in
   if (!auth) {
     return (
       <div className="card">
@@ -55,6 +83,7 @@ export default function UpdateOrg(){
     );
   }
 
+  // Org still loading
   if (!org) {
     return (
       <div className="card">
@@ -70,22 +99,39 @@ export default function UpdateOrg(){
     <div className="split">
       <div className="card">
         <h2>Update Organization</h2>
-        <p className="muted">You can rename the organization or change the admin email. Both are optional — fill only the fields you want to change.</p>
+        <p className="muted">
+          Rename the organization or change the admin email. Both fields are optional.
+        </p>
 
-        <div style={{ marginBottom: "16px", padding: "12px", backgroundColor: "#f0fdf4", border: "1px solid #86efac", borderRadius: "8px" }}>
+        <div
+          style={{
+            marginBottom: "16px",
+            padding: "12px",
+            backgroundColor: "#f0fdf4",
+            border: "1px solid #86efac",
+            borderRadius: "8px"
+          }}
+        >
           <strong>Current Organization:</strong> {org.organization_name}
           <br />
           <strong>Admin Email:</strong> {org.admin_email}
         </div>
 
-        {msg && <div className={msg.type === "error" ? "alert error" : "alert success"}>{msg.text}</div>}
+        {msg && (
+          <div className={msg.type === "error" ? "alert error" : "alert success"}>
+            {msg.text}
+          </div>
+        )}
 
         <form onSubmit={submit} className="form">
+
           <label>New organization name (optional)
             <input
               placeholder="Enter new organization name"
               value={form.new_organization_name}
-              onChange={e => setForm({...form, new_organization_name: e.target.value})}
+              onChange={e =>
+                setForm({ ...form, new_organization_name: e.target.value })
+              }
             />
           </label>
 
@@ -94,7 +140,9 @@ export default function UpdateOrg(){
               type="email"
               placeholder="Enter new admin email"
               value={form.new_admin_email}
-              onChange={e => setForm({...form, new_admin_email: e.target.value})}
+              onChange={e =>
+                setForm({ ...form, new_admin_email: e.target.value })
+              }
             />
           </label>
 
@@ -102,6 +150,7 @@ export default function UpdateOrg(){
             <button className="btn" type="submit" disabled={loading}>
               {loading ? "Updating…" : "Update Organization"}
             </button>
+
             <button
               type="button"
               className="btn ghost"
@@ -112,6 +161,7 @@ export default function UpdateOrg(){
             >
               Clear
             </button>
+
             <button
               type="button"
               className="btn ghost"
@@ -126,11 +176,10 @@ export default function UpdateOrg(){
       <aside className="card side">
         <h3>Update Tips</h3>
         <ul>
-          <li>Organization names are sanitized (lowercase, underscores only)</li>
+          <li>Organization names are sanitized (lowercase + underscores)</li>
           <li>Email must be unique across all organizations</li>
-          <li>Update may take a moment (collection migration)</li>
+          <li>Updating may take a moment (collection migration)</li>
           <li>A backup is created automatically</li>
-          <li>You can update either field or both</li>
         </ul>
 
         <h4 style={{ marginTop: 16 }}>Current Info</h4>
