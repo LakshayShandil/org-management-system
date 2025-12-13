@@ -47,48 +47,6 @@ See: `frontend/README_DEPLOYMENT.md`
 
 ---
 
-## 📋 Project Structure
-
-```
-org-management-system/
-├── backend/
-│   ├── README.md                    # Backend setup & deployment
-│   ├── requirements.txt             # Python dependencies
-│   ├── app/
-│   │   ├── main.py                 # FastAPI app
-│   │   ├── routes/
-│   │   │   ├── auth.py             # Auth endpoints
-│   │   │   └── orgs.py             # Organization endpoints
-│   │   └── core/
-│   │       ├── auth.py             # JWT logic
-│   │       ├── db.py               # MongoDB connection
-│   │       └── config.py           # Settings
-│   └── tests/                       # Unit tests
-│
-├── frontend/
-│   ├── README_DEPLOYMENT.md        # Frontend deployment guide
-│   ├── package.json
-│   ├── src/
-│   │   ├── App.jsx                 # Main app with routes
-│   │   ├── pages/
-│   │   │   ├── Login.jsx
-│   │   │   ├── Dashboard.jsx
-│   │   │   ├── CreateOrg.jsx
-│   │   │   ├── UpdateOrg.jsx
-│   │   │   ├── MasterList.jsx      # Superadmin view
-│   │   │   └── Help.jsx
-│   │   ├── auth/
-│   │   │   └── AuthProvider.jsx    # Auth context
-│   │   └── utils/
-│   │       ├── api.js              # API client
-│   │       └── jwt.js              # JWT decoding
-│   └── postcss.config.js           # Tailwind config
-│
-└── README.md                        # This file
-```
-
----
-
 ## 🔐 Key Features
 
 ### For Organization Admins
