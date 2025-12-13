@@ -155,7 +155,7 @@ You can find the collection file in this repository:
 
 | Role | Username / Email | Password |
 | :--- | :--- | :--- |
-| **Superadmin** | `superadmin` | `SuperSecret123!` |
+| **Superadmin** | `super` | `SuperSecret!` |
 | **Org Admin** | *(Created during "Create Org")* | *(User defined)* |
 
 -----
