@@ -1,6 +1,6 @@
 ## **README.md**
 
-```markdown
+
 # Organization Management System
 
 A full-stack system for creating, managing, updating, and deleting dynamically generated organizations.  
@@ -52,9 +52,7 @@ This project satisfies and **exceeds** the backend assignment requirements by ad
 
 # Architecture Overview
 
-```
-
-```
+``
                 ┌──────────────────────────┐
                 │        Frontend           │
                 │  React + Vite (Vercel)    │
@@ -236,15 +234,13 @@ This project:
 
 A fully functional, production-ready dynamic organization management system with admin authentication, collection creation, updates, deletion, and a polished UI.
 
-```
+``
 
 ---
 
-# **ARCHITECTURE DIAGRAM (SEPARATE)**
+# ARCHITECTURE DIAGRAM (SEPARATE)
 
-```
-
-```
+``
                 ┌──────────────────────────┐
                 │        Frontend           │
                 │  React + Vite (Vercel)    │
@@ -278,7 +274,7 @@ A fully functional, production-ready dynamic organization management system with
 
 # **API SUMMARY (SEPARATE)**
 
-```
+``
 
 POST /org/create
 POST /admin/login
@@ -290,13 +286,13 @@ GET  /admin/master-list
 PUT  /admin/update-org/<name>
 DELETE /admin/delete-org/<name>
 
-```
+``
 
 ---
 
-# **FEATURES LIST (SEPARATE)**
+# FEATURES LIST (SEPARATE)
 
-```
+``
 
 Backend:
 
@@ -325,13 +321,13 @@ Deployment:
 * Render backend deployment
 * MongoDB Atlas cloud database
 
-```
+``
 
 ---
 
-# **SETUP GUIDE (SEPARATE)**
+# SETUP GUIDE (SEPARATE)
 
-```
+``
 
 1. Clone repo
 2. Backend:
