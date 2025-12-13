@@ -19,7 +19,7 @@ It goes beyond the basic requirements by including a **modern React frontend**, 
 
 The system uses a **Serverless Proxy** pattern to ensure secure and CORS-free communication between the frontend and backend.
 
-```mermaid
+```
 graph TD
     User[User / Admin] --> |HTTPS| Frontend[React Frontend (Vercel)]
     Frontend --> |/api/proxy/*| Proxy[Serverless Proxy (Vercel Edge)]
