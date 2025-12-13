@@ -141,15 +141,15 @@ You can find the collection file in this repository:
 
 [**Click here to view the Postman Collection**](https://www.postman.com/mission-architect-60792172/workspace/the-wedding-company/collection/42557406-59740940-5ab6-4d9e-a2a0-e824fd0396a9?action=share&creator=42557406)
 
-<img width="1267" height="829" alt="super_login" src="https://github.com/user-attachments/assets/c2537cad-724e-46f5-a8d9-98c1e42ac6b7" />
+<img width="300" height="200" alt="super_login" src="https://github.com/user-attachments/assets/c2537cad-724e-46f5-a8d9-98c1e42ac6b7" />
 
-<img width="1702" height="830" alt="create" src="https://github.com/user-attachments/assets/d2771e28-ba27-4c1c-9f01-ea00a94b0a42" />
+<img width="300" height="200" alt="create" src="https://github.com/user-attachments/assets/d2771e28-ba27-4c1c-9f01-ea00a94b0a42" />
 
-<img width="1723" height="814" alt="get" src="https://github.com/user-attachments/assets/7cea305d-c7f8-425b-9644-f1497a92ecca" />
+<img width="300" height="200" alt="get" src="https://github.com/user-attachments/assets/7cea305d-c7f8-425b-9644-f1497a92ecca" />
 
-<img width="1270" height="768" alt="update" src="https://github.com/user-attachments/assets/2da6ddf9-2cde-4734-bbfe-9e33de5f5aad" />
+<img width="300" height="200" alt="update" src="https://github.com/user-attachments/assets/2da6ddf9-2cde-4734-bbfe-9e33de5f5aad" />
 
-<img width="1270" height="657" alt="delete" src="https://github.com/user-attachments/assets/564e447d-61d6-4be0-be15-dd0e1910b35f" />
+<img width="300" height="200" alt="delete" src="https://github.com/user-attachments/assets/564e447d-61d6-4be0-be15-dd0e1910b35f" />
 
 ### Demo Credentials
 
