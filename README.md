@@ -10,13 +10,12 @@ It goes beyond the basic requirements by including a **modern React frontend**, 
 
 ## 🚀 Live Demo
 
-  - **Frontend:** [https://your-frontend.vercel.app](https://www.google.com/search?q=https://your-frontend.vercel.app) *(Replace with your actual link)*
-  - **Backend:** [https://your-backend.onrender.com](https://your-backend.onrender.com) *(Replace with your actual link)*
-  - **API Docs (Swagger):** [https://your-backend.onrender.com/docs](https://www.google.com/search?q=https://your-backend.onrender.com/docs)
+  - **Site:** [https://org-management-system.vercel.app](https://www.google.com/search?q=https://org-management-system.vercel.app) 
+  - **Postman Collection:** [https://www.postman.com](https://www.postman.com/mission-architect-60792172/workspace/the-wedding-company/collection/42557406-59740940-5ab6-4d9e-a2a0-e824fd0396a9?action=share&creator=42557406)
 
 -----
 
-## 🏗️ Architecture
+## Architecture
 
 The system uses a **Serverless Proxy** pattern to ensure secure and CORS-free communication between the frontend and backend.
 
