@@ -511,45 +511,10 @@ Collection → Variables:
 
 ---
 
-# ## Troubleshooting
-
-### ❌ JWT expired too fast
-
-Set longer expiry in `.env`:
-
-```
-ACCESS_TOKEN_EXPIRE_MINUTES=43200
-```
-
-### ❌ 401 Unauthorized
-
-* Token is expired → re-login
-* Token not pasted into Postman variable
-* Wrong `Authorization` header format
-  Must be:
-
-  ```
-  Bearer <token>
-  ```
-
-### ❌ Missing env vars (ValidationError)
-
-Start uvicorn **inside backend folder**:
-
-```cmd
-cd backend
-uvicorn app.main:app --reload
-```
-
----
-
 # ## Future Improvements
 
 * Add refresh tokens
-* Add frontend (React + Vite)
-* Add CI/CD (GitHub Actions)
 * Add unit tests + mongomock
-* Deploy to Render/Railway
 
 ---
 
