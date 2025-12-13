@@ -15,7 +15,7 @@ This project satisfies and **exceeds** the backend assignment requirements by ad
 - API proxy infrastructure (no CORS issues)  
 - Auto-migration when renaming organizations  
 
----
+
 
 ## Features
 
@@ -48,11 +48,11 @@ This project satisfies and **exceeds** the backend assignment requirements by ad
 - Zero CORS issues  
 - Optimized production build
 
----
+
 
 # Architecture Overview
 
-``
+
                 ┌──────────────────────────┐
                 │        Frontend           │
                 │  React + Vite (Vercel)    │
@@ -75,11 +75,11 @@ This project satisfies and **exceeds** the backend assignment requirements by ad
    │   master_db: metadata, admin info                      │
    │   org collections: org_<name>                          │
    └─────────────────────────────────────────────────────────┘
-```
 
-```
 
----
+
+
+
 
 # Demo Credentials
 
@@ -234,13 +234,13 @@ This project:
 
 A fully functional, production-ready dynamic organization management system with admin authentication, collection creation, updates, deletion, and a polished UI.
 
-``
 
----
+
+
 
 # ARCHITECTURE DIAGRAM (SEPARATE)
 
-``
+
                 ┌──────────────────────────┐
                 │        Frontend           │
                 │  React + Vite (Vercel)    │
@@ -266,11 +266,11 @@ A fully functional, production-ready dynamic organization management system with
    │  master_db: org metadata, admin info                   │
    │  org collections: org_<name>                           │
    └─────────────────────────────────────────────────────────┘
-```
 
-```
 
----
+
+
+
 
 # **API SUMMARY (SEPARATE)**
 
